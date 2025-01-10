@@ -1,0 +1,4 @@
+[submodule "_lib/ubiquitous_bash"]
+	path = _lib/ubiquitous_bash
+	url = git@github.com:mirage335-colossus/ubiquitous_bash.git
+	shallow = true
