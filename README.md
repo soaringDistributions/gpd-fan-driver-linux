@@ -5,11 +5,41 @@ See license.txt for gpd-fan-driver-linux license conditions.
 
 
 
+GPD Win Mini 2024 8840U - is known to tolerate fan off for hours, at least with carefully applied liquid metal thermal interface material.
+
+In any case, despite entirely valid and appropriate cautions from the developer of the relevant fan control Linux kernel module... it should be reasonable to set a low fan speed (~35%) at low temperature (<50degC), and then pass control to some other algorithm whenever this temperature is much exceeded, such as default automatic control.
+
+Suggested fan curve:
+35% 50degC
+38% 65degC
+38% 70degC
+100% 80degC
 
 
 
 
+# Prompt
 
+Please help. There is an out-of-tree Linux kernel fan driver for the small pocketable GPD Win Mini 2024 8840U computer, which is essential, because it is not practical to sleep in the same room as that computer otherwise.
+
+The repository for this Linux kernel module is available from this git compatible URL:
+git@github.com:Cryolitia/gpd-fan-driver.git
+
+Build systems have access to this repository, so it is preferable to use the SSH URL rather than the HTTPS URL.
+
+Arch Linux repository enumerates this as the 'dkms.conf.in' file:
+PACKAGE_NAME="gpd-fan-driver"
+PACKAGE_VERSION=%%VERSION%%
+AUTOINSTALL="yes"
+
+BUILT_MODULE_NAME[0]="gpd-fan"
+BUILT_MODULE_LOCATION[0]="./"
+DEST_MODULE_LOCATION[0]="/extra"
+MAKE[0]="make KERNEL_SRC=$kernel_source_dir"
+CLEAN="make clean"
+
+
+Now, please, provide commands to run on a Debian Stable Linux system to create Debian packages with DKMS support based on this information.
 
 
 
@@ -17,6 +47,7 @@ See license.txt for gpd-fan-driver-linux license conditions.
 # Reference
 
 https://github.com/Cryolitia/gpd-fan-driver
+git@github.com:Cryolitia/gpd-fan-driver.git
 
 https://aur.archlinux.org/packages/gpd-fan-driver-dkms-git
 

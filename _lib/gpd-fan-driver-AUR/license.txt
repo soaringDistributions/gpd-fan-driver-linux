@@ -1,0 +1,13 @@
+
+https://aur.archlinux.org/packages/gpd-fan-driver-dkms-git
+
+https://aur.archlinux.org/cgit/aur.git/tree/dkms.conf.in?h=gpd-fan-driver-dkms-git
+https://aur.archlinux.org/cgit/aur.git/plain/dkms.conf.in?h=gpd-fan-driver-dkms-git
+
+https://aur.archlinux.org/cgit/aur.git/tree/gpdfanspeed?h=gpd-fan-driver-dkms-git
+https://aur.archlinux.org/cgit/aur.git/plain/gpdfanspeed?h=gpd-fan-driver-dkms-git
+
+
+
+
+Obtained from above links either without explicit license or under the inherited presumably 'GPLv2' license. Statements on relevant websites regarding 'GPL-2.0-or-later' license, may or may not be valid - this is unknown. Licensing under a later version may not make sense considering the Linux Kernel 'GPLv2' license.

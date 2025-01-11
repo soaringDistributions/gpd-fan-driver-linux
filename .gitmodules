@@ -2,3 +2,6 @@
 	path = _lib/ubiquitous_bash
 	url = git@github.com:mirage335-colossus/ubiquitous_bash.git
 	shallow = true
+[submodule "_lib/gpd-fan-driver"]
+	path = _lib/gpd-fan-driver
+	url = git@github.com:Cryolitia/gpd-fan-driver.git
