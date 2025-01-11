@@ -39,8 +39,28 @@ MAKE[0]="make KERNEL_SRC=$kernel_source_dir"
 CLEAN="make clean"
 
 
-Now, please, provide commands to run on a Debian Stable Linux system to create Debian packages with DKMS support based on this information.
+As an example, gasket-driver, the GoogleTPU PCIE driver, uses this debian/rules file, apparently to only compile the kernel modules after installation using DKMS.
+#!/usr/bin/make -f
 
+include /usr/share/dpkg/pkg-info.mk
+
+%:
+	dh $@ --with dkms
+
+override_dh_install:
+	dh_install src/* usr/src/gasket-$(DEB_VERSION_UPSTREAM)/
+
+override_dh_dkms:
+	dh_dkms -V $(DEB_VERSION_UPSTREAM)
+
+override_dh_auto_configure:
+override_dh_auto_build:
+override_dh_auto_test:
+override_dh_auto_install:
+override_dh_auto_clean:
+
+
+Now, please, based on this information, provide commands to run on a Debian Stable Linux system to create Debian packages which will only compile the kernel modules after installation using DKMS. It is not desirable to compile the kernel modules when just building the Debian package.
 
 
 

@@ -36,7 +36,7 @@ _ub_cksum_special_derivativeScripts_contents() {
 #export ub_setScriptChecksum_disable='true'
 ( [[ -e "$0".nck ]] || [[ "${BASH_SOURCE[0]}" != "${0}" ]] || [[ "$1" == '--profile' ]] || [[ "$1" == '--script' ]] || [[ "$1" == '--call' ]] || [[ "$1" == '--return' ]] || [[ "$1" == '--devenv' ]] || [[ "$1" == '--shell' ]] || [[ "$1" == '--bypass' ]] || [[ "$1" == '--parent' ]] || [[ "$1" == '--embed' ]] || [[ "$1" == '--compressed' ]] || [[ "$0" == "/bin/bash" ]] || [[ "$0" == "-bash" ]] || [[ "$0" == "/usr/bin/bash" ]] || [[ "$0" == "bash" ]] ) && export ub_setScriptChecksum_disable='true'
 export ub_setScriptChecksum_header='2591634041'
-export ub_setScriptChecksum_contents='3940600648'
+export ub_setScriptChecksum_contents='3294839987'
 
 # CAUTION: Symlinks may cause problems. Disable this test for such cases if necessary.
 # WARNING: Performance may be crucial here.
@@ -47099,72 +47099,66 @@ _build_prog_sequence() {
     #git clone git@github.com:Cryolitia/gpd-fan-driver.git
     cp -a "$scriptLib"/gpd-fan-driver "$safeTmp"/
     cd gpd-fan-driver
+    mkdir src
+    mv -f ./* src/
 
-    mkdir -p "$safeTmp"/debian
+    mkdir -p "$safeTmp"/gpd-fan-driver/debian
 
     # https://en.wikipedia.org/wiki/Debian_version_history#Debian_12_(Bookworm)
-    cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/debian/control
-Source: gpd-fan-driver
-Maintainer: Your Name <you@example.com>
-Section: kernel
-Priority: optional
-Standards-Version: 4.6.1
-Build-Depends: debhelper-compat (= 12), dkms
-Rules-Requires-Root: no
+    cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/gpd-fan-driver/debian/control
+Source: gpd-fan-driver-dkms
+Maintainer: Soaring Distributions LLC not_yet@example.com
+Build-Depends: debhelper (>= 9), dkms
+Homepage: https://github.com/Cryolitia/gpd-fan-driver
+Vcs-Git: git@github.com:Cryolitia/gpd-fan-driver.git
+Vcs-Browser: https://github.com/Cryolitia/gpd-fan-driver
 
 Package: gpd-fan-driver-dkms
 Architecture: all
-Depends: dkms (>= 2.1.0.0), ${misc:Depends}
-Description: GPD Win Mini fan driver kernel module (DKMS)
- The gpd-fan driver is an out-of-tree kernel module providing fan control
- for the GPD Win Mini device. This package uses DKMS for automatic
- recompilation of the module when new kernels are installed.
- 
- https://github.com/Cryolitia/gpd-fan-driver
- git@github.com:Cryolitia/gpd-fan-driver.git
- 
- https://aur.archlinux.org/packages/gpd-fan-driver-dkms-git
- 
- https://aur.archlinux.org/cgit/aur.git/tree/dkms.conf.in?h=gpd-fan-driver-dkms-git
- https://aur.archlinux.org/cgit/aur.git/plain/dkms.conf.in?h=gpd-fan-driver-dkms-git
- 
- https://aur.archlinux.org/cgit/aur.git/tree/gpdfanspeed?h=gpd-fan-driver-dkms-git
- https://aur.archlinux.org/cgit/aur.git/plain/gpdfanspeed?h=gpd-fan-driver-dkms-git
- 
- https://github.com/soaringDistributions/gpd-fan-driver
- 
- 
- 
+Priority: optional
+Section: kernel
+Depends: dkms (>= 1.95), linux-headers-686-pae | linux-headers-amd64 | linux-headers-generic | linux-headers, ${misc:Depends}
+Description: GPD Fan driver for GPD Win Mini 2024 (8840U)
+ This package provides a DKMS-based kernel module for the GPD Win Mini's fan.
+ It defers compilation until the moment you install this package (via DKMS).
 CZXWXcRMTo8EmM8i4d
 
     # https://en.wikipedia.org/wiki/Debian_version_history#Debian_12_(Bookworm)
-    cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/debian/compat
-12
+    cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/gpd-fan-driver/debian/compat
+10
 CZXWXcRMTo8EmM8i4d
 
-    cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/debian/rules
+# https://github.com/soaringDistributions/gasket-driver/blob/4568a135dc7ac893a99972d03f7c86a4ab7ffb9a/debian/rules
+    cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/gpd-fan-driver/debian/rules
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/pkg-info.mk
+
+# We build a "source only" DKMS package by overriding
+# most build/clean steps so that compilation is deferred.
+
 %:
-	dh $@
+	dh $@ --with dkms
 
+override_dh_install:
+	dh_install src/* usr/src/gpd-fan-driver-$(DEB_VERSION_UPSTREAM)/
+
+override_dh_dkms:
+	# Pass upstream version to DKMS so it knows how to name the source tree.
+	dh_dkms -V $(DEB_VERSION_UPSTREAM)
+
+override_dh_auto_configure:
 override_dh_auto_build:
-	# No special build steps needed aside from what dkms does, but
-	# if you want to run 'make' manually, do it here.
-	# e.g., make -C src
-	dh_auto_build
-
+override_dh_auto_test:
 override_dh_auto_install:
-	# No special install steps needed; we rely on dh_dkms
-	dh_auto_install
-	dh_dkms
-
+override_dh_auto_clean:
 CZXWXcRMTo8EmM8i4d
-    chmod +x "$safeTmp"/debian/rules
+    chmod +x "$safeTmp"/gpd-fan-driver/debian/rules
 
-cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/debian/gpd-fan-driver-dkms.dkms
+# https://github.com/soaringDistributions/gasket-driver/blob/4568a135dc7ac893a99972d03f7c86a4ab7ffb9a/debian/gasket-dkms.dkms
+cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/gpd-fan-driver/debian/gpd-fan-driver-dkms.dkms
 PACKAGE_NAME="gpd-fan-driver"
-PACKAGE_VERSION="%%VERSION%%"
+PACKAGE_VERSION="0.1"
 AUTOINSTALL="yes"
 
 BUILT_MODULE_NAME[0]="gpd-fan"
@@ -47174,25 +47168,32 @@ MAKE[0]="make KERNEL_SRC=${kernel_source_dir}"
 CLEAN="make clean"
 CZXWXcRMTo8EmM8i4d
 
-cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/debian/changelog
-gpd-fan-driver (1.0-1) unstable; urgency=medium
+cat << 'CZXWXcRMTo8EmM8i4d' > "$safeTmp"/gpd-fan-driver/debian/changelog
+gpd-fan-driver-dkms (0.1-1) unstable; urgency=medium
 
-  * Initial release of gpd-fan-driver DKMS package.
+  * Initial "source-only" DKMS packaging.
 
- -- Your Name <you@example.com>  $(date -R)
+ -- Soaring Distributions LLC <not_yet@example.com>  Wed, 01 Jan 2025 12:34:56 +0000
+
 CZXWXcRMTo8EmM8i4d
 
 
 
 
 
+	cd "$safeTmp"/gpd-fan-driver/
+    #dpkg-buildpackage -b -us -uc -tc
+	debuild -us -uc -tc -b
 
 
-    dpkg-buildpackage -b -us -uc
 
 
 
-
+    local currentDate
+    currentDate=$(date +"%Y-%m-%d" | tr -dc '0-9\-')
+    _safeRMR "$scriptLib"/install/gpd-fan-driver-"$currentDate"
+    mkdir -p "$scriptLib"/install/gpd-fan-driver-"$currentDate"
+    mv -f "$safeTmp"/*.deb "$scriptLib"/install/gpd-fan-driver-"$currentDate"/
 
     _stop
 }

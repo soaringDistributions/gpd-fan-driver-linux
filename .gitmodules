@@ -4,4 +4,4 @@
 	shallow = true
 [submodule "_lib/gpd-fan-driver"]
 	path = _lib/gpd-fan-driver
-	url = git@github.com:Cryolitia/gpd-fan-driver.git
+	url = git@github.com:soaringDistributions/gpd-fan-driver.git
