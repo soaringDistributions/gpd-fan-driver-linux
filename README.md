@@ -7,7 +7,7 @@ See license.txt for gpd-fan-driver-linux license conditions.
 
 GPD Win Mini 2024 8840U - is known to tolerate fan off for hours, at least with carefully applied liquid metal thermal interface material.
 
-In any case, despite entirely valid and appropriate cautions from the developer of the relevant fan control Linux kernel module... it should be reasonable to set a low fan speed (~35%) at low temperature (<50degC), and then pass control to some other algorithm whenever this temperature is much exceeded, such as default automatic control.
+In any case, despite entirely valid and appropriate cautions from the developer of the relevant fan control Linux kernel module... it should be reasonable to set a low fan speed (~35%) at low temperature (<50degC), and then pass control to some other algorithm whenever this temperature is much exceeded, such as default automatic control. Guaranteeing the fan does not remain at this idle speed if loads increase should NOT be necessary - far more than several seconds to hours of delay increasing fan speed as a very rare worst case should not usually cause damage (ie. there may be significant but acceptable risk to purely software control of fan speed with this particular device).
 
 Suggested fan curve:
 35% 50degC
